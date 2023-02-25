@@ -38,7 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'django_crontab',
+    'dal',
+    'dal_select2'
 ]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'london_cycle_map_app.cron.update_cycles_avaliable')
+]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

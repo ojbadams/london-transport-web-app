@@ -10,3 +10,9 @@ class BikePointLocation(models.Model):
     lon = models.FloatField()
     id = models.IntegerField(primary_key=True)
 
+class BikePointCapacity(models.Model):
+    """ Model Capacity """
+    id = models.IntegerField(primary_key=True)
+    capacity = models.IntegerField()
+    in_use = models.IntegerField()
+    last_updated = models.DateTimeField(auto_now=True)

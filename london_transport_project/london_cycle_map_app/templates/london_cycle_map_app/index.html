@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title>TfL BikePoint</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -33,7 +33,12 @@
 
   <!-- Chart JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
 
   <!-- =======================================================
   * Template Name: NiceAdmin - v2.5.0
@@ -49,7 +54,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="/" class="logo d-flex align-items-center">
         <img src="{% static 'london_cycle_map_app/assets/img/bike_logo.png' %}" alt="">
         <span class="d-none d-lg-block">Bike Monitor</span>
       </a>
@@ -64,7 +69,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " href="/">
           <i class="bi bi-grid"></i>
           <span>Overview</span>
         </a>
@@ -108,29 +113,51 @@
                 <div class="card-body">
                   <h5 class="card-title">Map</h5>
 
-                  <div id="map" class="map bodyWrapper"></div>
+                  {% load crispy_forms_tags %}
 
-                  <!-- Line Chart -->
-                  <script>
+                    <form method="post" action="search/">
+                      {% csrf_token %}
+                      <div class="row mb-3">
+                        {{ form.start_location|as_crispy_field }}
+                      </div>
 
-                    var map = L.map('map').setView([51.505, -0.09], 13);
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-                            maxZoom: 18
-                        }).addTo(map);
+                      <div class="row mb-3">
+                        {{ form.end_location|as_crispy_field }}
+                      </div>
 
-                    var locations = {{ lat_lon|safe }}
+                      <div class="row mb-3">
+                        <button type="submit" value="Submit" class="form-control" id="direction-form"> Search </button>
+                      </div>
+                    </form>
 
-                    for (var i = 0; i < locations.length; i++) {
-                        // var location = locations[i];
-                        var marker = new L.marker([locations[i][0], locations[i][1]])
-                          .bindPopup(locations[i][2])
-                          .addTo(map);
-                    }
+                    <div class="row mb-12">
+                      <div id="map" class="map bodyWrapper"></div>
 
-                  </script>
-                  <!-- End Line Chart -->
+                      <!-- Line Chart -->
+                      <script>
 
+                        var map = L.map('map').setView({{ centre_lat_lon|safe }}, {{ default_zoom|safe }});
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                                maxZoom: 18
+                            }).addTo(map);
+
+                        var locations = {{ lat_lon|safe }}
+
+                        var markers = L.markerClusterGroup();
+
+                        for (var i = 0; i < locations.length; i++) {
+                            var marker = new L.marker([locations[i][0], locations[i][1]])
+                                  .bindPopup(locations[i][2] + " : " + locations[i][3] + "/" + locations[i][4]);
+
+                            markers.addLayer(marker);
+                        }
+
+                        map.addLayer(markers);
+
+                      </script>
+                      <!-- End Line Chart -->
+                  </div>
                 </div>
 
               </div>

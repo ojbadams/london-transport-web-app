@@ -18,6 +18,6 @@ from django.urls import path, include
 
 
 urlpatterns = [
-    path('index/', include('london_cycle_map_app.urls')),
+    path('', include('london_cycle_map_app.urls')),
     path('admin/', admin.site.urls)
 ]
