@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'london_cycle_map_app.apps.LondonCycleMapAppConfig',
+    'london_cycle_map_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -86,12 +86,8 @@ WSGI_APPLICATION = 'london_transport_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME' : 'Core',
-        'USER' : 'django',
-        'PASSWORD' : '12345',
-        'HOST' : '127.0.0.1',
-        'PORT' : '3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME' : '/home/ojba/Documents/Coding_Projects/london-transport-web-app/london_transport_project/db.sqlite3'
     }
 }
 

@@ -1,5 +1,5 @@
 import json
-
+import logging
 import requests
 
 from london_cycle_map_app.models import BikePointCapacity
@@ -7,7 +7,8 @@ from london_cycle_map_app.models import BikePointCapacity
 def update_cycles_avaliable():
     """ Update BikePoints """
     output = requests.get("https://api.tfl.gov.uk/BikePoint/", timeout=200)
-
+    logging.info("Starting process")
+    print("here")
     # data_keys_to_extract = ["NbBikes", "NbDocks"]
 
     if output.status_code == 200:
