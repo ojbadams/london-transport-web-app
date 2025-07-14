@@ -1,5 +1,6 @@
 import psycopg
 
+
 class PostgresConnector:
     def __init__(self, host, dbname, user, password, port=5432):
         self.connection_params = {
@@ -7,7 +8,7 @@ class PostgresConnector:
             "dbname": dbname,
             "user": user,
             "password": password,
-            "port": port
+            "port": port,
         }
         self.conn = None
 
