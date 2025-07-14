@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tfl_data
+    network_mode: host
+  fetcher:
+    image: data_fetcher
+    container_name: data_fetcher
+    restart: always
+    network_mode: host
+  frontend:
+    image: frontend
+    container_name: frontend
+    restart: always
+    network_mode: host
+
