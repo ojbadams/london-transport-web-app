@@ -16,14 +16,12 @@ logger = logging.getLogger(__name__)
 def main():
     logger.info("Starting....")
     de = DataExtractor()
-    dt = DataTransformer()
+    counter = 0
 
     while True:
-        logger.info("Running Fetch")
-        de.fetch_data()
-        dt.transform_bike_dock()
-        time.sleep(6)
-
+        print(f"running counter {counter}")
+        de.refresh()
+        counter += 1
 
 if __name__ == "__main__":
     print("Starting....")

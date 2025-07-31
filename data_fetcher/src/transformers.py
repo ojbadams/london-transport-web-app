@@ -6,9 +6,9 @@ class DataTransformer:
         self.connector = PostgresConnector(
             host="localhost", user="postgres", password="postgres", dbname="tfl_data"
         )
-        self._init_data_base()
+        self._init_database()
 
-    def _init_data_base(self):
+    def _init_database(self):
         self.connector.execute_query("CREATE SCHEMA IF NOT EXISTS core;")
         self.connector.execute_query(
             """
@@ -20,20 +20,3 @@ class DataTransformer:
                         """
         )
 
-    def transform_bike_dock(self):
-        records = self.connector.execute_query(
-            "SELECT id, data FROM staging.raw_api_data WHERE processed = False"
-        )
-        ids_to_process = []
-        for record in records:
-            ids_to_process.append(record[0])
-            for result in record[1]:
-                lat, lon, tfl_id = result["lat"], result["lon"], result["id"]
-                self.connector.execute_query(
-                    "INSERT INTO core.docks (lat, lon, tfl_id) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING;",
-                    (
-                        lat,
-                        lon,
-                        tfl_id,
-                    ),
-                )

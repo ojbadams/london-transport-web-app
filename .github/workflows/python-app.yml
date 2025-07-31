@@ -30,3 +30,7 @@ jobs:
     - name: Run Isort
       run: | 
         isort . --check
+
+    - name: Run Pytest
+      run: | 
+        pytest .
